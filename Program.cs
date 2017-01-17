@@ -1,7 +1,9 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace TimeServer
 {
@@ -20,14 +22,26 @@ namespace TimeServer
 
     public class Startup
     {
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddRouting();
+        }
+
         public void Configure(IApplicationBuilder app)
-        {            
-            app.Run(async (context) =>
+        {  
+            var defaultRouteHandler = new RouteHandler(context =>
             {
-                await context.Response.WriteAsync(
-                    DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:sszzz"));
-                                                               
+                return context.Response.WriteAsync("Use GET /time to retrive current UTC time.");
             });
+            var routeBuilder = new RouteBuilder(app, defaultRouteHandler);
+            routeBuilder.MapRoute("default", "");
+            routeBuilder.MapGet("time", context =>
+            {
+                return context.Response.WriteAsync(
+                    DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:sszzz"));
+            });
+            var routes = routeBuilder.Build();
+            app.UseRouter(routes);
         }
     }
 }
