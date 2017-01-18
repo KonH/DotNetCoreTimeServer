@@ -11,9 +11,12 @@ namespace TimeServer
     {
         public static void Main(string[] args)
         {
+            var defaultUrls = new string[]{ "http://*:8080" };
+            var urls = args.Length > 0 ? args : defaultUrls;
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseStartup<Startup>()
+                .UseUrls(urls)
                 .Build();
 
             host.Run();
