@@ -9,6 +9,6 @@ Request for **/time** returns UTC time in string format.
 - Use Docker:
 	- ```docker pull konh/timeserver:latest```
 	- ```docker run -i -t -p 8080:8080 konh/timeserver:latest```
-	- You can customize port and url with additional commands like: ```docker run -i -t -p 80:80 -e TS_PORT=80 -e TS_URL=http://*:80 konh/timeserver:v2```
+	- You can customize port and url with additional commands like: ```docker run -i -t -p 80:80 -e TS_PORT=80 -e TS_URL=http://*:80 konh/timeserver:latest```
 	- Or you can create your own image from Dockerfile with custom settings
 
